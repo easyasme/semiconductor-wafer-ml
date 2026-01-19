@@ -168,9 +168,13 @@ The task was formulated as a binary classification problem, with defective wafer
 | Model | Precision (Bad) | Recall (Bad) | F1 | ROC-AUC|
 
 | Decision Tree (tuned) | 0.48 | 0.79 | 0.60 | 0.81 |
+
 | SVM (tuned) | 0.46 | 0.82 | 0.59 | 0.89 |
+
 | Random Forest (tuned) | 0.54 | 0.82 | 0.65 | 0.90 |
+
 | Gradient Boosting (tuned) | 0.81 | 0.65 | 0.72 | 0.92 |
+
 | XGBoost (tuned) | 0.78 | 0.74 | 0.76 | 0.90 |
 
 **Best Model - XGBoost**
