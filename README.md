@@ -5,9 +5,7 @@ Wafer-level quality prediction using multivariate time-series sensor data from s
 This project builds a machine learning pipeline to predict wafer quality using real production sensor data from two different machines. Each wafer contains time-series signals from multiple sensors, but only one quality label is given per wafer. Because of this, the project focuses heavily on feature engineering and careful evaluation rather than complex models.
 
 The main goal is to convert raw time-series sensor data into meaningful wafer-level features, handle different types of sensor behavior, and evaluate models in a way that makes sense for imbalanced manufacturing data.
-
----
-
+<br><br>
 ## Problem Overview
 
 During manufacturing, sensor data is recorded continuously as a wafer goes through multiple machines. This results in detailed time-series signals. However, quality inspection happens only once, after the wafer is fully processed. Because of this, each wafer has a single quality label that cannot be matched to individual sensor readings over time.
@@ -21,8 +19,7 @@ This creates several challenges:
   - Near-constant or binary-like channels
 - Strong class imbalance (approximately 20% defective wafers)
 - Redundant and highly correlated sensor channels
-
-
+<br><br>
 ## Dataset Description
 
 ### Equipment Sensor Data
@@ -51,8 +48,7 @@ Each row corresponds to:
   - Bad: about 20%
 
 The `class` label is a thresholded version of the continuous `response` score.
-
-
+<br><br>
 ## Exploratory Data Analysis (EDA)
 
 ### Sensor Behavior
@@ -72,8 +68,7 @@ The `class` label is a thresholded version of the continuous `response` score.
 
 **Conclusion**
 Raw time-series data should not be modeled directly. Sensor-specific aggregation into wafer-level features is essential.
-
-
+<br><br>
 ## Feature Engineering
 
 Time-series signals are independently summarized per wafer for each piece of equipment.
@@ -106,8 +101,7 @@ For zero-heavy sensors
 - 971 wafers
 - 556 cleaned features
 - Combined features from both equipment sources and response labels
-
-
+<br><br>
 ## Key Challenges and Design Decisions
 
 ### Challenge 1: Time-series data with wafer-level labels
@@ -115,26 +109,25 @@ Each wafer contains 176 timestamps of multivariate sensor readings, but only a s
 
 **Decision**
 Time-series signals were aggregated into wafer-level features using sensor-specific statistical and shape-based summaries.
-
+<br><br>
 ### Challenge 2: Diverse sensor behavior
 Some sensors exhibited smooth continuous behavior, while others were sparse or near-constant.
 
 **Decision**
 Sensors were grouped by behavior, and different feature extraction strategies were applied, including statistical summaries for continuous sensors and activation-based features for sparse sensors.
-
+<br><br>
 ### Challenge 3: Severe class imbalance
 Approximately 20% of wafers were defective.
 
 **Decision**
 Model evaluation prioritized recall and F1-score for the defective class rather than overall accuracy to reflect manufacturing risk.
-
+<br><br>
 ### Challenge 4: High feature redundancy
 Many engineered features were strongly correlated or near-constant.
 
 **Decision**
 Redundant and low-variance features were removed prior to modeling to reduce noise and mitigate overfitting.
-
-
+<br><br>
 ## Model Training and Evaluation
 
 Models were trained using a stratified train/test split (80/20).
@@ -151,6 +144,7 @@ The task was formulated as a binary classification problem, with defective wafer
 - Precision, Recall, and F1-score (focused on defective wafers)
 - ROC-AUC
 - Confusion Matrix analysis
+<br><br>
 
 | Model | Precision (Bad) | Recall (Bad) | F1 | ROC-AUC|
 
@@ -163,19 +157,18 @@ The task was formulated as a binary classification problem, with defective wafer
 | Gradient Boosting (tuned) | 0.81 | 0.65 | 0.72 | 0.92 |
 
 | XGBoost (tuned) | 0.78 | 0.74 | 0.76 | 0.90 |
+<br><br>
 
 **Best Model - XGBoost**
 
 XGBoost achieved the strongest balance between precision and recall for defective wafers, resulting in the highest F1-score while remaining robust to high-dimensional engineered features.
-
-
+<br><br>
 ## Takeaways
 
 - Real industrial time-series data requires problem-aware feature engineering
 - Sensor diversity must be explicitly handled rather than averaged away
 - Recall-oriented evaluation is critical in manufacturing quality control settings
-
-
+<br><br>
 ## Future Work
 - Regression modeling on continuous `response` values
 - Use SHAP to analyze feature importance and better understand which sensor patterns contribute most to defective predictions
