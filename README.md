@@ -22,7 +22,6 @@ This creates several challenges:
 - Strong class imbalance (approximately 20% defective wafers)
 - Redundant and highly correlated sensor channels
 
----
 
 ## Dataset Description
 
@@ -53,7 +52,6 @@ Each row corresponds to:
 
 The `class` label is a thresholded version of the continuous `response` score.
 
----
 
 ## Exploratory Data Analysis (EDA)
 
@@ -75,7 +73,6 @@ The `class` label is a thresholded version of the continuous `response` score.
 **Conclusion**
 Raw time-series data should not be modeled directly. Sensor-specific aggregation into wafer-level features is essential.
 
----
 
 ## Feature Engineering
 
@@ -110,7 +107,6 @@ For zero-heavy sensors
 - 556 cleaned features
 - Combined features from both equipment sources and response labels
 
----
 
 ## Key Challenges and Design Decisions
 
@@ -120,15 +116,11 @@ Each wafer contains 176 timestamps of multivariate sensor readings, but only a s
 **Decision**
 Time-series signals were aggregated into wafer-level features using sensor-specific statistical and shape-based summaries.
 
----
-
 ### Challenge 2: Diverse sensor behavior
 Some sensors exhibited smooth continuous behavior, while others were sparse or near-constant.
 
 **Decision**
 Sensors were grouped by behavior, and different feature extraction strategies were applied, including statistical summaries for continuous sensors and activation-based features for sparse sensors.
-
----
 
 ### Challenge 3: Severe class imbalance
 Approximately 20% of wafers were defective.
@@ -136,15 +128,12 @@ Approximately 20% of wafers were defective.
 **Decision**
 Model evaluation prioritized recall and F1-score for the defective class rather than overall accuracy to reflect manufacturing risk.
 
----
-
 ### Challenge 4: High feature redundancy
 Many engineered features were strongly correlated or near-constant.
 
 **Decision**
 Redundant and low-variance features were removed prior to modeling to reduce noise and mitigate overfitting.
 
----
 
 ## Model Training and Evaluation
 
@@ -163,8 +152,6 @@ The task was formulated as a binary classification problem, with defective wafer
 - ROC-AUC
 - Confusion Matrix analysis
 
----
-
 | Model | Precision (Bad) | Recall (Bad) | F1 | ROC-AUC|
 
 | Decision Tree (tuned) | 0.48 | 0.79 | 0.60 | 0.81 |
@@ -181,13 +168,13 @@ The task was formulated as a binary classification problem, with defective wafer
 
 XGBoost achieved the strongest balance between precision and recall for defective wafers, resulting in the highest F1-score while remaining robust to high-dimensional engineered features.
 
----
 
 ## Takeaways
 
 - Real industrial time-series data requires problem-aware feature engineering
 - Sensor diversity must be explicitly handled rather than averaged away
 - Recall-oriented evaluation is critical in manufacturing quality control settings
+
 
 ## Future Work
 - Regression modeling on continuous `response` values
